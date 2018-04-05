@@ -177,7 +177,7 @@
         return mysqli_num_rows($result) > 0;
     }
     
-    //perform insert query, add models to the watchlist
+    //perform insert query, add models to the physicianlist
     function add_to_physicianslist($userEmail, $physicianID,$physicianFirst,$physicianLast,$description=""){
         global $db;
         $query  = "INSERT INTO physicianslist ";
@@ -196,6 +196,9 @@
             $_SESSION["message"] = "Try again.";
           }
     }
+
+    
+
     //perform delete query, remove models from the watchlist
     function remove_from_physicianslist($userEmail, $physicianID){
         global $db;
