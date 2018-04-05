@@ -2,7 +2,7 @@
 require_once("../includes/session.php");
 //include functions
 require_once("../includes/functions.php");
-//get the productname from URL
+//get the physicianID from URL
 $physicianID = $_REQUEST["physician"];
 $queryString = "SELECT * FROM physicians WHERE ID = ?";
 
@@ -54,23 +54,81 @@ echo "</form>";
 }
 //set the user email if exist 
 $userEmail = !empty($_SESSION["email"])? $_SESSION["email"]:"";
+//set physicianID in session
+$_SESSION["physician"] = $physicianID;
 //set timezone and get current time
 date_default_timezone_set("America/Vancouver");
 
 echo"
 <hr/>
 <h3> Comments </h3>
-<form>
+<form method='post' id='comment_form'>
     <input type='hidden' name='userEmail' value='$userEmail'>
+    <input type='hidden' name='physicianID' value='$physicianID'>
     <input type='hidden' name='date' value='".date('Y-m-d H:i:s')."'>
-    <textarea name='message'>
-    </textarea><br>
+    <textarea name='comment_content'></textarea><br>
     <input type='reset' name='clear' value='Cancel'>
-    <input type='submit' name='comment' value='Comment'>
+    <input type='submit' name='submit' id='submit' value='Comment'>
 </form>";
+
+//displaying all comments
+echo "
+<span id='comment_message'></span>
+<div id='display_comment'>
+</div>";
 
 
 echo"</section>";
 //add footer
 include('../includes/footer.php');
 ?>
+
+<script type="text/javascript">
+    //make sure everything has loaded
+    $(document).ready(function(){
+        //submit comment data, execute when the form is submitted
+        $('#comment_form').on('submit',function(event){
+            //this fucntion will stop submitting form data to server
+            event.preventDefault();
+            //convert form data to URL encoded string
+            var form_data=$(this).serialize();
+            console.log(form_data);
+            //ajax request
+            $.ajax({
+                //send request to add_comment page
+                url:"add_comment.php",
+                //define method to send data
+                method:"POST",
+                //define the data want ot send to server
+                data:form_data,
+                //define data type that we want to receive - JSON
+                dataType:"JSON",
+                //success callback function, receive data from server
+                success:function(data) {
+                    //check if there;s data error
+                    if(data.error!=''){
+                        //reset form field
+                        $('#comment_form')[0].reset();
+                        //display error message under div with comment
+                        $('#comment_message').html(data.error);
+                        load_comment();
+                    }
+                }
+            })
+        });
+    load_comment();
+    function load_comment(){
+        $.ajax({
+            //send request to fetch_comment
+            url:"fetch_comment.php",
+            method:"POST",
+            //success callback, display with html()
+            success:function(data){
+                $('#display_comment').html(data);
+            }
+        })
+    }
+    });
+</script>
+
+
