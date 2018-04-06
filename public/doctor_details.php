@@ -42,7 +42,7 @@ $stmt->free_result();
 //check if it's already in the watchlist, if yes, dont display add button
 if(@check_exist($_SESSION["email"],$physicianID)==false){
 echo "<form action=\"myphysicians.php\" method=\"post\">\n";
-echo "<input type=\"hidden\" name=\"physician\" value=\"$ID\">\n";
+echo "<input type=\"hidden\" name=\"physicianID\" value=\"$ID\">\n";
 echo "<input type=\"hidden\" name=\"physicianFirst\" value=\"$physicianFirst\">\n";
 echo "<input type=\"hidden\" name=\"physicianLast\" value=\"$physicianLast\">\n";
 echo "<b>Add to Myphysicians: </b><br>\n";
@@ -55,7 +55,9 @@ echo "</form>";
 //set the user email if exist 
 $userEmail = !empty($_SESSION["email"])? $_SESSION["email"]:"";
 //set physicianID in session
-$_SESSION["physician"] = $physicianID;
+$_SESSION["physicianID"] = $physicianID;
+$_SESSION["physicianFirst"] = $physicianFirst;
+$_SESSION["physicianLast"] = $physicianLast;
 //set timezone and get current time
 date_default_timezone_set("America/Vancouver");
 
@@ -70,6 +72,10 @@ echo"
     <input type='reset' name='clear' value='Cancel'>
     <input type='submit' name='submit' id='submit' value='Comment'>
 </form>";
+//check if the user has logged in, if not hide the comment box
+if(!isset($_SESSION["email"])){
+    echo"<script type = 'text/javascript'>document.getElementById('comment_form').style.display = 'none';</script>";
+}
 
 //displaying all comments
 echo "
@@ -86,6 +92,7 @@ include('../includes/footer.php');
 <script type="text/javascript">
     //make sure everything has loaded
     $(document).ready(function(){
+
         //submit comment data, execute when the form is submitted
         $('#comment_form').on('submit',function(event){
             //this fucntion will stop submitting form data to server
