@@ -161,8 +161,8 @@
         if(!logged_in()){
             if(isset($_POST["add"])){
                     //store callback url and add request into session for later use (after user log in)
-                    $_SESSION["callback_url"] = "/yza314/yza314_A4/public/addtowatchlist.php";
-                    $_SESSION["productName"] =$_POST["model"];
+                    $_SESSION["callback_url"] = "/yza314/DList/public/myphysicians.php";
+                    $_SESSION["physicianID"] =$_POST["physicianID"];
                 }
             //if not loged in redirect
             redirect_to("login.php");

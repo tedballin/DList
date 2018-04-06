@@ -6,23 +6,24 @@ require_once("../includes/functions.php");
 confirm_logged_in();
 include("../includes/header.php");
 
-//execute add request automatically after login
-if(isset($_SESSION["physicianID"])){
-    //check if it's already in the databse before adding it
-    if(@check_exist($_SESSION["email"],$_SESSION["physicianID"])==false){
-      add_to_physicianslist($_SESSION["email"],$_SESSION["physicianID"]);
-    }
-}
 
 //normal add request as logged in
 if(isset($_POST["add"])){
 //insert new physician to watchlist
-$physician = $_POST["physician"];
+$physician = $_POST["physicianID"];
 $physicianFirst = $_POST["physicianFirst"];
 $physicianLast = $_POST["physicianLast"];
 $description = $_POST["description"];
 add_to_physicianslist($_SESSION["email"],$physician,$physicianFirst,$physicianLast,$description);
 }
+
+//execute add request automatically after login
+if(isset($_SESSION["physicianID"])){
+    //check if it's already in the databse before adding it
+    if(@check_exist($_SESSION["email"],$_SESSION["physicianID"])==false){   
+         add_to_physicianslist($_SESSION["email"],$_SESSION["physicianID"],$_SESSION["physicianFirst"],$_SESSION["physicianLast"],"");
+        }
+    }
 
 
 echo "<section class=\"container main_content\">";
