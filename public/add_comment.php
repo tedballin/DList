@@ -15,6 +15,8 @@ $date = '';
 $physicianID = $_POST["physicianID"];
 $comment_email= $_POST["userEmail"];
 $date = $_POST["date"];
+$knowledge_rating = $_POST["knowledge_rating"];
+$helpfulness_rating = $_POST["helpfulness_rating"];
 
 
 //check, error message
@@ -31,9 +33,9 @@ if($error == '')
 {
 //define query
  $query = "INSERT INTO comments "; 
- $query .="(physicianID, userEmail, date, message) ";
+ $query .="(physicianID, userEmail, date, knowledge_rating, helpfulness_rating, message) ";
  $query .="VALUES ";
- $query .="(:physicianID, :userEmail, :date, :message)";
+ $query .="(:physicianID, :userEmail, :date, :knowledge_rating, :helpfulness_rating, :message)";
 
  //prepare statement perform query
  $statement = $db->prepare($query);
@@ -43,6 +45,8 @@ if($error == '')
    ':physicianID' => $physicianID,
    ':userEmail'    => $comment_email,
    ':date' => $date,
+   ':knowledge_rating' => $knowledge_rating,
+   ':helpfulness_rating' => $helpfulness_rating,
    ':message' => $comment_content
   )
  );

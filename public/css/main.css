@@ -33,6 +33,11 @@ ul{
     width: 100%;
 }
 
+/* doctor details */
+.doc_details{
+    margin-top:5em;
+    margin-bottom: 10em;
+}
 /* comment */
 
 textarea{

@@ -17,7 +17,7 @@ $stmt->bind_result($ID,$firstName,$lastName,$type,$gender,$address,$phoneNumber,
 //include header
 include("../includes/header.php");
 
-echo "<section class=\"container\">";
+echo "<section class=\"container doc_details\">";
 //physician details
 if($stmt->fetch()){
     echo "<h4>$firstName $lastName</h4>\n";
@@ -63,7 +63,30 @@ date_default_timezone_set("America/Vancouver");
 
 echo"
 <hr/>
+<div>
 <h3> Comments </h3>
+<span>Knowledge Rating:</span>
+<ul class='list-inline'>";
+
+for($count=1; $count<=5; $count++)
+ {
+   $color1 = 'color:#ccc;';
+  echo"<li id='knowledge-$count' data-index='$count' class='rating_k list-inline-item' style='cursor:pointer; $color1 font-size:16px;'>&#9733;</li>";
+} 
+
+echo"
+</ul>
+<span>Helpfulness Rating:</span>
+<ul class='list-inline'>";
+
+for($count=1; $count<=5; $count++)
+ {
+   $color2 = 'color:#ccc;';
+  echo"<li id='helpfulness-$count' data-index='$count' class='rating_h list-inline-item' style='cursor:pointer; $color2 font-size:16px;'>&#9733;</li>";
+} 
+
+echo"
+</ul>
 <form method='post' id='comment_form'>
     <input type='hidden' name='userEmail' value='$userEmail'>
     <input type='hidden' name='physicianID' value='$physicianID'>
@@ -71,7 +94,7 @@ echo"
     <textarea name='comment_content'></textarea><br>
     <input type='reset' name='clear' value='Cancel'>
     <input type='submit' name='submit' id='submit' value='Comment'>
-</form>";
+</form></div>";
 //check if the user has logged in, if not hide the comment box
 if(!isset($_SESSION["email"])){
     echo"<script type = 'text/javascript'>document.getElementById('comment_form').style.display = 'none';</script>";
@@ -90,8 +113,60 @@ include('../includes/footer.php');
 ?>
 
 <script type="text/javascript">
+
     //make sure everything has loaded
     $(document).ready(function(){
+
+        //knowledge rating
+        //change color when mouse over stars, code will execute when mouse over elements with .rating_k class
+        $(document).on('mouseenter', '.rating_k', function(){
+        //attach data to index, and fetch index attribute we stored
+        var index_k = $(this).data("index");
+        var knowledge = 'knowledge';
+        // console.log(index_k);
+        //remove color when mouse leave
+        remove_background(knowledge);
+        for(var count = 1; count<=index_k; count++)
+        {
+        $('#'+knowledge+'-'+count).css('color', '#ffcc00');
+        }
+        });
+        //change star color to gray when mouse leave
+        function remove_background(rating)
+        {
+            for(var count = 1; count<=5; count++){
+                $('#'+rating+'-'+count).css('color', '#ccc');
+            }
+        }
+        
+        $(document).on('click','.rating_k',function(){
+            //global index for knowledge rating
+            index_k = $(this).data("index");
+            console.log(index_k);
+            var knowledge = 'knowledge';
+            alert("You have rate this physician's knowledge "+index_k+" out of 5");
+        })
+        
+        //helpfulness rating
+        $(document).on('mouseenter', '.rating_h', function(){
+        //attach data to index, and fetch index attribute we stored
+        var index_h = $(this).data("index");
+        var helpfulness = 'helpfulness';
+        //remove color when mouse leave
+        remove_background(helpfulness);
+        for(var count = 1; count<=index_h; count++)
+        {
+        $('#'+helpfulness+'-'+count).css('color', '#ffcc00');
+        }
+        });
+        
+        $(document).on('click','.rating_h',function(){
+            //global index for knowledge rating
+            index_h = $(this).data("index");
+            var helpfulness = 'helpfulness';
+            alert("You have rate this physician's helpfulness "+index_h+" out of 5");
+        }) 
+
 
         //submit comment data, execute when the form is submitted
         $('#comment_form').on('submit',function(event){
@@ -99,6 +174,12 @@ include('../includes/footer.php');
             event.preventDefault();
             //convert form data to URL encoded string
             var form_data=$(this).serialize();
+            //append rating values to data string
+            form_data+='&knowledge_rating=';
+            form_data+=index_k;
+            form_data+='&helpfulness_rating=';
+            form_data+=index_h;
+
             console.log(form_data);
             //ajax request
             $.ajax({
