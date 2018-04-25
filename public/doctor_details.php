@@ -63,8 +63,8 @@ date_default_timezone_set("America/Vancouver");
 
 echo"
 <hr/>
-<div>
 <h3> Comments </h3>
+<div id='comment_section'>
 <span>Knowledge Rating:</span>
 <ul class='list-inline'>";
 
@@ -98,6 +98,7 @@ echo"
 //check if the user has logged in, if not hide the comment box
 if(!isset($_SESSION["email"])){
     echo"<script type = 'text/javascript'>document.getElementById('comment_form').style.display = 'none';</script>";
+    echo"<script type = 'text/javascript'>document.getElementById('comment_section').style.display = 'none';</script>";
 }
 
 //displaying all comments
