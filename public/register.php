@@ -75,30 +75,31 @@ if(empty($errors)){
 }
 echo "<section class=\"container\">";
 echo "<div class=\"row flex-column col-12 my-5\">";
-echo "<h2>Register</h2>";
+echo "<h3>Register</h3>";
 //this allows me to write html code without quote
 print <<< FORM
-  <form class="register" action="register.php" method="post">
-  First name:
-  <input type="text" name="firstname" value="">
-  Last name:
+  <form action="register.php" method="post" class="register">
+  First name: <br>
+  <input type="text" name="firstname" value="" class="reg-input"><br>
+  Last name:<br>
   <input type="text" name="lastname" value=""><br>
-  Email:
+  Email:<br>
   <input type="email" name="email" value=""><br>
-  Password:
-  <input type="password" name="password" value="">
-  Confirm Password:
+  Password:<br>
+  <input type="password" name="password" value=""><br>
+  Confirm Password:<br>
   <input type="password" name="confirm_passowrd" value=""><br>
-  Age:
-  <input type="text" name="age" value="">
-  Gender:
+  Age:<br>
+  <input type="text" name="age" value=""><br>
+  Gender:<br>
   <input type="text" name="gender" value=""><br>
   Address:<br>
   <textarea rows="4" cols="50" name="address" value="">
   </textarea>
   <br><br>
-  <input type="submit" name=submit value="Register">
   <a href="showmodels.php">Cancel</a>
+  <input type="submit" name=submit value="Register" class="button special">
+  
   </form>
   <br />
 FORM;

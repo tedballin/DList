@@ -21,11 +21,12 @@ include("../includes/header.php");
          confirm_query($specialty_result,$db);
         ?>
 
+         <img class="w3-image" src="../public/img/main-image.jpg" alt="Doctor Photo" width="100%" height="auto">
         <form class="search_form" action="" method="post">
-            <h2>Find a physician</h2>
+            <h3>Find a physician</h3>
             <hr/>
-            <div class="row justify-content-between my-5">
-                <div class="search_column col-sm-4">
+            <div class="row">
+                <div class="search_column">
                     <label for="">Practice type </label>
                     <br>
                     <input type="radio" name="type" value="General Family Practice" checked> Family Physicians
@@ -63,27 +64,28 @@ include("../includes/header.php");
                     <br>
                     <input type="radio" name="gender" value="either"> Either
                 </div>
-                <div class="search_column col-sm-4">
+                <div class="search_column">
                     <label for="">Availability for New Patient </label>
                     <br>
                     <input type="checkbox" name="availability" value="Yes"> Available
-                </div>
-
-            </div>
-
-            <div class="row justify-content-between">
-                <div class="search_column col-sm-4">
-                    <label for="">Physician Name</label>
                     <br>
-                    <input type="text" name="firstName" placeholder="First name"><br>
-                    <input type="text" name="lastName" placeholder="Last name">
-                </div>
-                <div class="search_column col-sm-4">
+
                     <label for="">City</label>
                     <br>
                     <input type="text" name="city" placeholder="City">
                 </div>
-            <div class="search_column col-sm-3 d-flex align-items-center">
+
+            </div>
+
+            <div class="row">
+                <div class="search_column">
+                    <label for="">Physician Name</label>
+                    <br>
+                    <input type="text" name="firstName" placeholder="First name">
+                    <input type="text" name="lastName" placeholder="Last name">
+                </div>
+                
+            <div class="search_column col-sm-3 d-flex" style="margin-top: 1.5em; margin-left: 8em;">
                     <input type="reset" value="Clear">
                     <input type="submit" name="submit_btn" value="Search">
             </div>
@@ -93,24 +95,6 @@ include("../includes/header.php");
     <div class="search_result">
       <h2>Search result:</h2>
     <?php
-    // // 2. perform database query
-    // $query2 = "SELECT * ";
-    // $query2 .= "FROM physicians";
-    // $result = $db->query($query2);
-    // //check if there is query error
-    // confirm_query($result,$db);
-    
-    // echo "<ul>";
-    // // 3. use returned result
-    // while($physician = $result->fetch_assoc()){
-    // echo "<li>";
-    // format_physician_as_link("doctor_details.php",$physician["ID"],$physician["firstName"],$physician["lastName"],$physician["type"]);
-    // echo "</li>"; 
-    // }
-    // echo "</ul>";
-    
-    //process form
-    
     if(isset($_POST["submit_btn"])){
 
         $conditions= "WHERE";
@@ -131,13 +115,7 @@ include("../includes/header.php");
                                             $conditions .= " AND lastName = '$lastName'";}
         if(!empty($_POST["city"])){$city =  ucwords(cleanData($_POST["city"]));
                                              $conditions .= " AND address LIKE '%$city%'";}
-    
 
-    // echo "<pre>";
-    // print_r($_POST);
-    // echo "</pre>";
-
-    echo $conditions;
 
     //perform a daynamic query based on user's input
     $queryString = "SELECT * ";

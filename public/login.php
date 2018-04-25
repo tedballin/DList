@@ -50,9 +50,9 @@ $found_user = attempt_login($email,$password);
 }
 
 echo "<section class=\"container\">";
-echo "<div class=\"col-12 my-5 bg\">";
+echo "<div class=\"login_form\">";
 print <<< FORM
- <h2>Log In</h2>
+ <h3 style="padding-top: 0.5em;">Log In</h3>
 
  <form action="login.php" method="post"> 
      Email:
